@@ -2,8 +2,20 @@
   "name": "@pf/worker-scanner",
   "private": true,
   "scripts": {
-    "dev": "node src/index.js",
+    "dev": "ts-node src/index.ts",
     "build": "echo build-scanner",
-    "lint": "echo lint-scanner"
+    "lint": "echo lint-scanner",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
+  },
+  "dependencies": {
+    "zod": "^4.1.13"
   }
 }
