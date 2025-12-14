@@ -1,3 +1,9 @@
+/**
+ * Unit tests for the Worker Lifecycle.
+ *
+ * Verifies that the state machine correctly handles valid transitions
+ * and throws errors for invalid state changes.
+ */
 import { describe, it, expect } from "vitest";
 import { createLifecycle } from "../../../src/worker/lifecycle";
 

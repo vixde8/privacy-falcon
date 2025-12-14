@@ -1,3 +1,9 @@
+/**
+ * Worker Lifecycle State Machine.
+ *
+ * This module defines the valid states and transitions for a scan job,
+ * ensuring the worker moves through a predictable lifecycle (Received -> Running -> Completed/Failed).
+ */
 export type ScanState = "RECEIVED" | "RUNNING" | "COMPLETED" | "FAILED";
 
 export function createLifecycle() {
