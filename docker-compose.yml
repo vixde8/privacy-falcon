@@ -8,12 +8,36 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  mongo-express:
+    image: mongo-express
+    container_name: pf-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD}
+    depends_on:
+      - mongo
+
   redis:
     image: redis:7
     container_name: pf-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: pf-redis-commander
+    restart: unless-stopped
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8082:8081"
+    depends_on:
+      - redis
 
 volumes:
   mongo_data:
