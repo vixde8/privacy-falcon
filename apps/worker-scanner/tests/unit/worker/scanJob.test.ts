@@ -1,3 +1,9 @@
+/**
+ * Unit tests for Scan Job Validation.
+ *
+ * Ensures that incoming job payloads adhere to the defined contract,
+ * rejecting invalid URLs or configuration parameters.
+ */
 import { describe, it, expect } from "vitest";
 import { parseScanJob } from "../../../src/contract/scanJob";
 

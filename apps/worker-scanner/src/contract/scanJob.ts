@@ -1,3 +1,9 @@
+/**
+ * Scan Job Contract.
+ *
+ * Defines the Zod schema and TypeScript types for scan jobs.
+ * Acts as the boundary validation layer for incoming work items.
+ */
 import { z } from "zod";
 
 const ScanJobSchema = z.object({
