@@ -221,7 +221,7 @@ A consistent cyber-security aesthetic
                                  ▼
                        ┌───────────────────┐
                        │      FastAPI      │
-                       │ scan statuspdf │
+                       │ scan statuspdf    │
                        └────────┬──────────┘
                                 │
                                 ▼
