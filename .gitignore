@@ -14,3 +14,10 @@ coverage
 .DS_Store
 .idea
 .vscode
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
