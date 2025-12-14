@@ -1,8 +1,16 @@
+# Dependencies
 node_modules
+
+# Env
 .env
+.env.local
+
+# Builds
 dist
 build
 coverage
+
+# OS / Editor
 .DS_Store
 .idea
 .vscode

@@ -1,0 +1,9 @@
+{
+  "name": "@pf/api",
+  "private": true,
+  "scripts": {
+    "dev": "node src/index.js",
+    "build": "echo build-api",
+    "lint": "echo lint-api"
+  }
+}
