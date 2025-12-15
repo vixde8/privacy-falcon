@@ -1,0 +1,31 @@
+{
+  "tracker_id": "string",
+  "vendor": "string",
+  "product": "string",
+  "category": "analytics | advertising | social_media | tag_manager | session_replay | error_monitoring | fraud_detection | performance_monitoring",
+  "purpose": ["string"],
+  "description": "string",
+
+  "applicable_regions": ["EU", "US", "IN", "GLOBAL"],
+
+  "default_severity": "low | medium | high",
+
+  "identifiers": {
+    "domains": ["string"],
+    "script_patterns": ["string"],
+    "cookie_names": ["string"]
+  },
+
+  "confidence_weights": {
+    "network": 0.0,
+    "script": 0.0,
+    "cookie": 0.0
+  },
+
+  "first_party_capable": true,
+  "requires_consent": true,
+
+  "rule_version": "1.0.0",
+  "last_updated": "YYYY-MM-DD",
+  "source": "internal_research | public_docs"
+}

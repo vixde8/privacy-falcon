@@ -1,0 +1,21 @@
+{
+  "tracker_id": "sentry",
+  "vendor": "Sentry",
+  "product": "Sentry",
+  "category": "error_monitoring",
+  "purpose": ["error_tracking"],
+  "description": "Tracks frontend and backend errors.",
+  "applicable_regions": ["EU", "US", "IN", "GLOBAL"],
+  "default_severity": "low",
+  "identifiers": {
+    "domains": ["sentry.io"],
+    "script_patterns": ["Sentry.init"],
+    "cookie_names": []
+  },
+  "confidence_weights": { "network": 0.6, "script": 0.4, "cookie": 0.0 },
+  "first_party_capable": true,
+  "requires_consent": false,
+  "rule_version": "1.0.0",
+  "last_updated": "2025-01-01",
+  "source": "public_docs"
+}

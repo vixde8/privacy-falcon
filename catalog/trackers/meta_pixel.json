@@ -1,0 +1,21 @@
+{
+  "tracker_id": "meta_pixel",
+  "vendor": "Meta",
+  "product": "Facebook Pixel",
+  "category": "advertising",
+  "purpose": ["ad_targeting", "conversion_tracking"],
+  "description": "Tracks conversions and ad interactions.",
+  "applicable_regions": ["EU", "US", "IN", "GLOBAL"],
+  "default_severity": "high",
+  "identifiers": {
+    "domains": ["facebook.com", "connect.facebook.net"],
+    "script_patterns": ["fbq("],
+    "cookie_names": ["_fbp"]
+  },
+  "confidence_weights": { "network": 0.5, "script": 0.4, "cookie": 0.1 },
+  "first_party_capable": false,
+  "requires_consent": true,
+  "rule_version": "1.0.0",
+  "last_updated": "2025-01-01",
+  "source": "public_docs"
+}
