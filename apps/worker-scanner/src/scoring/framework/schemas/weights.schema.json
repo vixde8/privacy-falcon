@@ -1,0 +1,19 @@
+{
+  "$id": "DimensionWeights",
+  "type": "object",
+  "required": [
+    "tracking_risk",
+    "consent_compliance",
+    "data_exposure",
+    "transparency",
+    "control_and_choice"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "tracking_risk": { "type": "number" },
+    "consent_compliance": { "type": "number" },
+    "data_exposure": { "type": "number" },
+    "transparency": { "type": "number" },
+    "control_and_choice": { "type": "number" }
+  }
+}

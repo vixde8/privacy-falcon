@@ -1,0 +1,10 @@
+{
+  "$id": "Penalty",
+  "type": "object",
+  "required": ["severity", "base_penalty"],
+  "additionalProperties": false,
+  "properties": {
+    "severity": { "enum": ["low", "medium", "high", "critical"] },
+    "base_penalty": { "type": "number", "maximum": 0 }
+  }
+}

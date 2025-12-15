@@ -1,0 +1,14 @@
+{
+  "$id": "Law",
+  "type": "object",
+  "required": ["law_id", "jurisdiction", "requirements"],
+  "additionalProperties": false,
+  "properties": {
+    "law_id": { "type": "string" },
+    "jurisdiction": { "enum": ["EU", "US", "INDIA"] },
+    "requirements": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" }
+    }
+  }
+}
