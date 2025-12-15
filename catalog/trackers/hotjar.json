@@ -1,0 +1,21 @@
+{
+  "tracker_id": "hotjar",
+  "vendor": "Hotjar",
+  "product": "Hotjar",
+  "category": "session_replay",
+  "purpose": ["user_experience", "behavior_analysis"],
+  "description": "Records sessions and heatmaps.",
+  "applicable_regions": ["EU", "US", "IN"],
+  "default_severity": "high",
+  "identifiers": {
+    "domains": ["hotjar.com"],
+    "script_patterns": ["hjSettings"],
+    "cookie_names": ["_hjSession", "_hjIncludedInSample"]
+  },
+  "confidence_weights": { "network": 0.4, "script": 0.4, "cookie": 0.2 },
+  "first_party_capable": false,
+  "requires_consent": true,
+  "rule_version": "1.0.0",
+  "last_updated": "2025-01-01",
+  "source": "public_docs"
+}

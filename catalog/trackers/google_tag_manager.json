@@ -1,0 +1,21 @@
+{
+  "tracker_id": "google_tag_manager",
+  "vendor": "Google",
+  "product": "Google Tag Manager",
+  "category": "tag_manager",
+  "purpose": ["tag_management"],
+  "description": "Manages third-party scripts and tags.",
+  "applicable_regions": ["EU", "US", "IN", "GLOBAL"],
+  "default_severity": "high",
+  "identifiers": {
+    "domains": ["googletagmanager.com"],
+    "script_patterns": ["gtm.js", "GTM-"],
+    "cookie_names": []
+  },
+  "confidence_weights": { "network": 0.7, "script": 0.3, "cookie": 0.0 },
+  "first_party_capable": true,
+  "requires_consent": true,
+  "rule_version": "1.0.0",
+  "last_updated": "2025-01-01",
+  "source": "public_docs"
+}
