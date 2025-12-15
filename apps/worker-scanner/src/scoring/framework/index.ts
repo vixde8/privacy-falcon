@@ -4,6 +4,8 @@ export * from "./types/law";
 export * from "./types/penalty";
 export * from "./types/score";
 
+export * from "./penalty";
+
 export * from "./validators/validateDetection";
 export * from "./validators/validateScoreOutput";
 export * from "./validators/validateRuleset";
