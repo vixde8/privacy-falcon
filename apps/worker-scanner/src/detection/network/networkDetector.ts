@@ -1,3 +1,8 @@
+/**
+ * Network-based Tracker Detector.
+ *
+ * Detects trackers by observing network requests.
+ */
 import { extractHostname, domainMatches } from "./domainMatcher";
 
 export type NetworkRequest = {

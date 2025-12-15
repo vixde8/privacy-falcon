@@ -1,3 +1,8 @@
+/**
+ * Script-based Tracker Detector.
+ *
+ * Detects trackers by observing script URLs and inline script content.
+ */
 import { extractHostname } from "../network/domainMatcher";
 import { matchesScriptPattern } from "./scriptMatcher";
 

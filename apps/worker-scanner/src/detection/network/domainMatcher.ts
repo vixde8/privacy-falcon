@@ -1,3 +1,8 @@
+/**
+ * Domain Matcher.
+ *
+ * Matches observed domains against a known tracker's domain patterns.
+ */
 export function extractHostname(url: string): string | null {
   try {
     const u = new URL(url);

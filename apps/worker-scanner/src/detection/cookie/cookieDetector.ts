@@ -1,3 +1,8 @@
+/**
+ * Cookie-based Tracker Detector.
+ *
+ * Detects trackers by observing cookies set in the browser.
+ */
 import { cookieNameMatches } from "./cookieMatcher";
 
 export type Cookie = {

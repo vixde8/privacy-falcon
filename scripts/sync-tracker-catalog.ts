@@ -1,3 +1,9 @@
+/**
+ * Tracker Catalog Sync.
+ *
+ * Synchronizes the tracker catalog from the file system
+ * to the MongoDB database.
+ */
 import fs from "fs";
 import path from "path";
 import { MongoClient } from "mongodb";

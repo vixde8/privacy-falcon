@@ -1,3 +1,8 @@
+/**
+ * Cookie Matcher.
+ *
+ * Matches observed cookies against a known tracker's cookie patterns.
+ */
 export function cookieNameMatches(
   cookieName: string,
   trackerCookie: string
