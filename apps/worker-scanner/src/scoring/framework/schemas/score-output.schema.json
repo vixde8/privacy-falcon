@@ -1,0 +1,19 @@
+{
+  "$id": "PrivacyScore",
+  "type": "object",
+  "required": [
+    "final_score",
+    "grade",
+    "dimensions",
+    "scoring_version",
+    "ruleset_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "final_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "grade": { "enum": ["A", "B", "C", "D", "F"] },
+    "dimensions": { "type": "object" },
+    "scoring_version": { "type": "string" },
+    "ruleset_hash": { "type": "string" }
+  }
+}
