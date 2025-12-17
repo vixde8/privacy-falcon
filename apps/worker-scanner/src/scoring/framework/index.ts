@@ -9,3 +9,5 @@ export * from "./penalty";
 export * from "./validators/validateDetection";
 export * from "./validators/validateScoreOutput";
 export * from "./validators/validateRuleset";
+
+export * from "./aggregation";
