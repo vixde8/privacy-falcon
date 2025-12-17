@@ -12,6 +12,7 @@
     "lint": "pnpm -r lint"
   },
   "devDependencies": {
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "vitest": "^4.0.15"
   }
 }

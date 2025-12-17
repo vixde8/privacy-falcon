@@ -6,7 +6,7 @@
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { MongoClient } from "mongodb";
-import { createScanRepository } from "../../../src/persistence/scanRepository";
+import { createScanRepository } from "../../../src/persistence/scan.repository";
 
 let client: MongoClient;
 
