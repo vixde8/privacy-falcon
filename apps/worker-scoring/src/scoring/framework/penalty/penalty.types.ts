@@ -1,6 +1,6 @@
-import { Severity, Detection } from "../types/detection";
-import { Jurisdiction } from "../types/law";
-import { Dimension } from "../types/dimension";
+import { Severity, Detection } from "../../types/detection";
+import { Jurisdiction } from "../../types/law";
+import { Dimension } from "../../types/dimension";
 import { Ruleset } from "../../rules/ruleset.schema";
 
 export interface AppliedPenalty {

@@ -3,7 +3,7 @@
  */
 
 import { AggregationResult } from "../aggregation/aggregation.types";
-import { Dimension } from "../types/dimension";
+import { Dimension } from "../../types/dimension";
 
 const ALL_DIMENSIONS: Dimension[] = [
   "tracking_risk",

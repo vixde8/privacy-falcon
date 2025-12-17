@@ -5,7 +5,7 @@
 import { AggregationResult } from "../aggregation/aggregation.types";
 import { ScoreExplanation } from "./explainability.types";
 import { formatDimensionExplanation } from "./formatDimensionExplanation";
-import { Dimension } from "../types/dimension";
+import { Dimension } from "../../types/dimension";
 
 export function formatScoreExplanation(
   aggregation: AggregationResult

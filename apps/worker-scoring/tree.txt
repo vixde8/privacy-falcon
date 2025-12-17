@@ -1,0 +1,79 @@
+.
+├── README.md
+├── node_modules
+│   └── vitest -> ../../../node_modules/.pnpm/vitest@4.0.15_@types+node@25.0.2_tsx@4.21.0/node_modules/vitest
+├── package.json
+├── src
+│   ├── index.ts
+│   ├── scoring
+│   │   ├── framework
+│   │   │   ├── aggregation
+│   │   │   │   ├── aggregateDimensions.ts
+│   │   │   │   ├── aggregateScore.ts
+│   │   │   │   ├── aggregation.types.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── explainability
+│   │   │   │   ├── explainability.types.ts
+│   │   │   │   ├── formatDimensionExplanation.ts
+│   │   │   │   ├── formatScoreExplanation.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── grading
+│   │   │   │   ├── consistencyChecks.ts
+│   │   │   │   ├── grade.constants.ts
+│   │   │   │   ├── gradeScore.ts
+│   │   │   │   ├── grading.types.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── index.ts
+│   │   │   ├── penalty
+│   │   │   │   ├── applyPenalty.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── penalty.config.ts
+│   │   │   │   ├── penalty.constants.ts
+│   │   │   │   ├── penalty.types.ts
+│   │   │   │   └── resolvePenaltyRule.ts
+│   │   │   ├── schemas
+│   │   │   │   ├── detection.schema.json
+│   │   │   │   ├── dimension.schema.json
+│   │   │   │   ├── law.schema.json
+│   │   │   │   ├── penalty.schema.json
+│   │   │   │   ├── score-output.schema.json
+│   │   │   │   └── weights.schema.json
+│   │   │   ├── types
+│   │   │   │   ├── detection.ts
+│   │   │   │   ├── dimension.ts
+│   │   │   │   ├── law.ts
+│   │   │   │   ├── penalty.ts
+│   │   │   │   └── score.ts
+│   │   │   ├── validation
+│   │   │   │   ├── index.ts
+│   │   │   │   └── validateFinalScore.ts
+│   │   │   └── validators
+│   │   │       ├── validateDetection.ts
+│   │   │       ├── validateRuleset.ts
+│   │   │       └── validateScoreOutput.ts
+│   │   └── rules
+│   │       ├── cache
+│   │       │   └── rulesetCache.ts
+│   │       ├── cli
+│   │       │   └── compileRules.ts
+│   │       ├── compiler
+│   │       │   ├── compileRuleset.ts
+│   │       │   └── validateRuleset.ts
+│   │       ├── index.ts
+│   │       ├── loader
+│   │       │   └── loadRuleset.ts
+│   │       ├── mongo
+│   │       │   └── ruleset.model.ts
+│   │       └── ruleset.schema.ts
+│   └── tests
+│       └── scoring
+│           ├── edge-cases.test.ts
+│           ├── penalty-engine.test.ts
+│           ├── score-aggregation.test.ts
+│           ├── score-explainability.test.ts
+│           ├── score-grading.test.ts
+│           └── validation-gate.test.ts
+├── tree.txt
+└── vitest.config.ts
+
+22 directories, 55 files

@@ -1,4 +1,4 @@
-import { Dimension } from "../types/dimension";
+import { Dimension } from "../../types/dimension";
 
 /**
  * One dimension’s human-readable explanation

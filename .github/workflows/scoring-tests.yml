@@ -3,8 +3,7 @@ name: Scoring Engine Tests
 on:
   pull_request:
     paths:
-      - "apps/worker-scanner/src/scoring/**"
-      - "apps/worker-scanner/src/tests/scoring/**"
+      - "apps/worker-scoring/**"
   push:
     branches:
       - main
@@ -16,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: apps/worker-scanner
+        working-directory: apps/worker-scoring
 
     steps:
       - name: Checkout repository
@@ -27,13 +26,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Enable Corepack (pnpm)
-        run: |
-          corepack enable
-          corepack prepare pnpm@8 --activate
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run scoring tests
-        run: pnpm vitest run src/tests/scoring
+      - name: Run scoring engine tests
+        run: pnpm vitest run
