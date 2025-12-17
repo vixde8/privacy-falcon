@@ -15,3 +15,5 @@ export * from "./aggregation";
 export * from "./explainability";
 
 export * from "./grading";
+
+export * from "../rules";

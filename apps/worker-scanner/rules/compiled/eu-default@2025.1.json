@@ -1,0 +1,26 @@
+{
+  "id": "eu-default",
+  "version": "2025.1",
+  "jurisdiction": "EU",
+  "effective_from": "2025-01-01",
+  "penalties": [
+    {
+      "detector": "meta_pixel",
+      "dimension": "tracking_risk",
+      "severity": "high",
+      "base_penalty": -15,
+      "applies_if": {
+        "consent_missing": true
+      }
+    }
+  ],
+  "weights": {
+    "tracking_risk": 0.3,
+    "consent_compliance": 0.25,
+    "data_exposure": 0.2,
+    "transparency": 0.15,
+    "control_and_choice": 0.1
+  },
+  "compiled_at": "2025-12-17T15:08:40.563Z",
+  "checksum": "2ee6293d1b2a0750ca7502950c9e4363b6232ec491d824d9604ae30f28207998"
+}

@@ -1,6 +1,7 @@
 import { Severity, Detection } from "../types/detection";
 import { Jurisdiction } from "../types/law";
 import { Dimension } from "../types/dimension";
+import { Ruleset } from "../../rules/ruleset.schema";
 
 export interface AppliedPenalty {
   detector: string;
@@ -13,9 +14,14 @@ export interface AppliedPenalty {
   reason: string;
 }
 
+/**
+ * Context required to apply a penalty.
+ * Ruleset is mandatory — no hardcoded policy allowed.
+ */
 export interface PenaltyContext {
   detection: Detection;
   dimension: Dimension;
   jurisdiction: Jurisdiction;
   reason: string;
+  ruleset: Ruleset;
 }
