@@ -1,0 +1,24 @@
+{
+  "id": "eu-default",
+  "version": "2025.1",
+  "jurisdiction": "EU",
+  "effective_from": "2025-01-01",
+  "penalties": [
+    {
+      "detector": "meta_pixel",
+      "dimension": "tracking_risk",
+      "severity": "high",
+      "base_penalty": -15,
+      "applies_if": {
+        "consent_missing": true
+      }
+    }
+  ],
+  "weights": {
+    "tracking_risk": 0.3,
+    "consent_compliance": 0.25,
+    "data_exposure": 0.2,
+    "transparency": 0.15,
+    "control_and_choice": 0.1
+  }
+}

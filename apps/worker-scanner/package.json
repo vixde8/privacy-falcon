@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "ts-node src/index.ts",
+    "compile:rules": "tsx src/scoring/rules/cli/compileRules.ts",
     "build": "echo build-scanner",
     "lint": "echo lint-scanner",
     "test": "vitest",
