@@ -11,3 +11,5 @@ export * from "./validators/validateScoreOutput";
 export * from "./validators/validateRuleset";
 
 export * from "./aggregation";
+
+export * from "./explainability";
