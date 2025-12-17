@@ -3,7 +3,7 @@
  * No scoring logic. No mutation.
  */
 
-import { Dimension } from "../types/dimension";
+import { Dimension } from "../../types/dimension";
 import { DimensionAggregation } from "../aggregation/aggregation.types";
 import { DimensionExplanation } from "./explainability.types";
 

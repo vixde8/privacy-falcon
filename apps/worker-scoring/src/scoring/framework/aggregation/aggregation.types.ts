@@ -1,4 +1,4 @@
-import { Dimension } from "../types/dimension";
+import { Dimension } from "../../types/dimension";
 import { AppliedPenalty } from "../penalty/penalty.types";
 
 /**

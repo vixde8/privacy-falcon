@@ -7,7 +7,7 @@
  */
 
 import { AppliedPenalty } from "../penalty/penalty.types";
-import { Dimension } from "../types/dimension";
+import { Dimension } from "../../types/dimension";
 
 export interface DimensionScore {
   score: number;

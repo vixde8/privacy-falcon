@@ -4,6 +4,14 @@
   "scripts": {
     "dev": "node src/index.js",
     "build": "echo build-scoring",
-    "lint": "echo lint-scoring"
+    "lint": "echo lint-scoring",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.15"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
   }
 }

@@ -3,8 +3,8 @@
  * Pure configuration. No logic.
  */
 
-import { Severity } from "../types/detection";
-import { Jurisdiction } from "../types/law";
+import { Severity } from "../../types/detection";
+import { Jurisdiction } from "../../types/law";
 
 export const BASE_PENALTIES: Record<Severity, number> = {
   low: -3,
