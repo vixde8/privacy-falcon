@@ -1,8 +1,9 @@
 /**
- * Worker Loop.
+ * Worker Loop
  *
- * Continuously polls for queued scans and executes them.
- * This process is long-running and separate from the API.
+ * Polls MongoDB for queued scans,
+ * claims one atomically,
+ * and executes it end-to-end.
  */
 
 import { connectMongo } from "../persistence/mongo";
@@ -10,36 +11,42 @@ import { createScanRepository } from "../persistence/scan.repository";
 import { executeScan } from "../services/scanExecutionService";
 
 const POLL_INTERVAL_MS = 3000;
+let isPolling = false;
 
 async function pollOnce() {
-  const { db } = await connectMongo();
-  const repo = createScanRepository(db);
+  if (isPolling) return; // prevent overlap
+  isPolling = true;
 
-  const queuedScans = await repo.findQueuedScans?.();
+  try {
+    console.log("🔍 Worker poll tick");
 
-  if (!queuedScans || queuedScans.length === 0) {
-    return;
-  }
+    const db = await connectMongo();
+    const repo = createScanRepository(db);
 
-  for (const scan of queuedScans) {
-    await executeScan(db, scan.scan_id);
-  }
-}
+    const scan = await repo.claimNextQueuedScan();
 
-export async function startWorkerLoop() {
-  console.log("🔁 Worker loop started");
-
-  while (true) {
-    try {
-      await pollOnce();
-    } catch (err) {
-      console.error("Worker loop error:", err);
+    if (!scan) {
+      console.log("📭 No queued scans found");
+      return;
     }
 
-    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+    console.log(
+      `🚀 Claimed scan ${scan.scan_id} | url=${scan.meta.url}`
+    );
+
+    await executeScan(db, scan.scan_id);
+
+    console.log(`✅ Finished scan ${scan.scan_id}`);
+  } catch (err) {
+    console.error("❌ Worker poll error:", err);
+  } finally {
+    isPolling = false;
   }
 }
 
-if (require.main === module) {
-  startWorkerLoop();
+export function startWorkerLoop() {
+  console.log("🔁 Worker loop started");
+  setInterval(pollOnce, POLL_INTERVAL_MS);
 }
+
+startWorkerLoop();

@@ -16,15 +16,15 @@ export type NetworkRequestRecord = {
 
 export async function observeNetwork(
   page: Page,
-  signal: AbortSignal
-): Promise<() => Promise<NetworkRequestRecord[]>> {
-  if (signal.aborted) {
+  signal?: AbortSignal
+): Promise<{ getRecords: () => NetworkRequestRecord[] }> {
+  if (signal?.aborted) {
     throw new Error("Network observation aborted before start");
   }
 
   const records: NetworkRequestRecord[] = [];
 
-  const onRequest = (request: any) => {
+  const handler = (request: any) => {
     records.push({
       url: request.url(),
       method: request.method(),
@@ -33,21 +33,19 @@ export async function observeNetwork(
     });
   };
 
-  page.on("request", onRequest);
+  page.on("request", handler);
 
-  signal.addEventListener(
-    "abort",
-    () => {
-      page.off("request", onRequest);
-    },
-    { once: true }
-  );
+  if (signal) {
+    signal.addEventListener(
+      "abort",
+      () => page.off("request", handler),
+      { once: true }
+    );
+  }
 
-  const collect = async (): Promise<NetworkRequestRecord[]> => {
-    const snapshot = [...records];
-    records.length = 0;
-    return snapshot;
+  return {
+    getRecords() {
+      return records;
+    }
   };
-
-  return collect;
 }

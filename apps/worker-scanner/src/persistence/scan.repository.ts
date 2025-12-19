@@ -1,30 +1,26 @@
 /**
- * Scan Repository.
+ * Scan Repository
  *
- * Persists and retrieves scan jobs from MongoDB.
- * This repository is the ONLY layer allowed to touch the `scans` collection.
- *
- * Responsibilities:
- * - Create new scan jobs
- * - Retrieve scans by id or query
- * - Update job lifecycle state and progress
- * - Provide worker pickup helpers (queued scans)
+ * The ONLY layer allowed to touch the `scans` collection.
+ * Provides atomic job claiming for workers.
  */
 
-import type { Db, Collection, WithId, Document } from "mongodb";
+import type { Db, Collection } from "mongodb";
 import type { NormalizedScanResult } from "../output/normalizeScanResult";
 
-/**
- * ScanDocument
- *
- * Canonical MongoDB representation of a scan job.
- * This shape is intentionally flexible and evolves over time.
- */
+export type ScanStatus =
+  | "queued"
+  | "running"
+  | "scanning"
+  | "scoring"
+  | "completed"
+  | "failed";
+
 export type ScanDocument = NormalizedScanResult & {
   _id?: string;
 
   scan_id: string;
-  status: "queued" | "running" | "scanning" | "scoring" | "completed" | "failed";
+  status: ScanStatus;
 
   progress: {
     phase: string;
@@ -52,57 +48,59 @@ export type ScanDocument = NormalizedScanResult & {
 export function createScanRepository(db: Db) {
   const collection: Collection<ScanDocument> = db.collection("scans");
 
-  /**
-   * save
-   *
-   * Persists a new scan job.
-   * Used by backend submission and local CLI.
-   */
+  /* -------------------- CREATE -------------------- */
+
   async function save(scan: ScanDocument) {
+    const now = new Date();
     const result = await collection.insertOne({
       ...scan,
-      created_at: scan.created_at ?? new Date(),
-      updated_at: scan.updated_at ?? new Date(),
+      created_at: now,
+      updated_at: now,
     });
-
     return result.insertedId.toString();
   }
 
-  /**
-   * findByScanId
-   *
-   * Retrieves a scan job by scan_id.
-   */
-  async function findByScanId(scan_id: string): Promise<ScanDocument | null> {
+  /* -------------------- READ -------------------- */
+
+  async function findByScanId(scan_id: string) {
     return collection.findOne({ scan_id });
   }
 
-  /**
-   * findByUrl
-   *
-   * Retrieves all scans executed against a given URL.
-   * Mostly useful for debugging and local dev.
-   */
-  async function findByUrl(url: string): Promise<ScanDocument[]> {
+  async function findByUrl(url: string) {
     return collection.find({ "meta.url": url }).toArray();
   }
 
+  /* -------------------- ATOMIC CLAIM -------------------- */
+
   /**
-   * updateJobState
-   *
-   * Updates scan lifecycle state and progress.
-   * Lifecycle validation MUST happen before calling this.
+   * Atomically claims ONE queued scan and marks it as running.
+   * This is CRITICAL for correctness.
    */
+  async function claimNextQueuedScan(): Promise<ScanDocument | null> {
+    const result = await collection.findOneAndUpdate(
+      { status: "queued" },
+      {
+        $set: {
+          status: "running",
+          progress: { phase: "running", percent: 5 },
+          updated_at: new Date(),
+        },
+      },
+      {
+        sort: { created_at: 1 },
+        returnDocument: "before",
+      }
+    );
+
+    return result as unknown as ScanDocument | null;
+  }
+
+  /* -------------------- UPDATE -------------------- */
+
   async function updateJobState(
     scan_id: string,
     update: Partial<
-      Pick<
-        ScanDocument,
-        | "status"
-        | "progress"
-        | "completed_at"
-        | "error"
-      >
+      Pick<ScanDocument, "status" | "progress" | "completed_at" | "error">
     >
   ) {
     await collection.updateOne(
@@ -116,15 +114,15 @@ export function createScanRepository(db: Db) {
     );
   }
 
-  /**
-   * persistScanResult
-   *
-   * Persists final normalized scan output and score.
-   * Used at the end of successful execution.
-   */
   async function persistScanResult(
     scan_id: string,
-    result: Partial<NormalizedScanResult>
+    result: Partial<NormalizedScanResult & {
+      score: number;
+      grade: string;
+      confidence: number;
+      explainability: any;
+      ruleset_version: string;
+    }>
   ) {
     await collection.updateOne(
       { scan_id },
@@ -137,26 +135,12 @@ export function createScanRepository(db: Db) {
     );
   }
 
-  /**
-   * findQueuedScans
-   *
-   * Returns scans eligible for worker pickup.
-   * Limited batch size to avoid overloading workers.
-   */
-  async function findQueuedScans(limit = 5): Promise<ScanDocument[]> {
-    return collection
-      .find({ status: "queued" })
-      .sort({ created_at: 1 })
-      .limit(limit)
-      .toArray();
-  }
-
   return {
     save,
     findByScanId,
     findByUrl,
+    claimNextQueuedScan,
     updateJobState,
     persistScanResult,
-    findQueuedScans,
   };
 }
