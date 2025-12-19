@@ -5,14 +5,14 @@
  * with performance and abort safety guarantees.
  */
 
-import { Page } from "playwright";
+import type { Page } from "playwright";
 
 export async function navigatePage(
   page: Page,
   url: string,
   signal: AbortSignal,
   timeoutMs = 30_000
-) {
+): Promise<void> {
   if (signal.aborted) {
     throw new Error("Navigation aborted before start");
   }

@@ -5,7 +5,7 @@
  * as first-party or third-party relative to the scanned page.
  */
 
-import { BrowserContext } from "playwright";
+import { Page } from "playwright";
 
 export type CookieRecord = {
   name: string;
@@ -13,34 +13,23 @@ export type CookieRecord = {
   path: string;
   httpOnly: boolean;
   secure: boolean;
-  sameSite: string;
-  firstParty: boolean;
 };
 
-function normalizeDomain(domain: string) {
-  return domain.startsWith(".") ? domain.slice(1) : domain;
-}
+export async function collectCookies(
+  page: Page,
+  signal?: AbortSignal
+): Promise<CookieRecord[]> {
+  if (signal?.aborted) {
+    return [];
+  }
 
-export async function collectCookies(params: {
-  context: BrowserContext;
-  pageUrl: string;
-}): Promise<CookieRecord[]> {
-  const { context, pageUrl } = params;
+  const cookies = await page.context().cookies();
 
-  const pageHost = new URL(pageUrl).hostname;
-  const cookies = await context.cookies();
-
-  return cookies.map((c) => {
-    const cookieDomain = normalizeDomain(c.domain);
-
-    return {
-      name: c.name,
-      domain: cookieDomain,
-      path: c.path,
-      httpOnly: c.httpOnly,
-      secure: c.secure,
-      sameSite: c.sameSite,
-      firstParty: cookieDomain === pageHost
-    };
-  });
+  return cookies.map(c => ({
+    name: c.name,
+    domain: c.domain,
+    path: c.path,
+    httpOnly: c.httpOnly,
+    secure: c.secure
+  }));
 }

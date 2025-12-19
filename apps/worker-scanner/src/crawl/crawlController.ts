@@ -1,74 +1,45 @@
 /**
- * Internal Crawl Controller.
+ * Crawl Controller.
  *
- * Controls which internal URLs should be visited during a scan,
- * enforcing depth, scope, and page count limits.
+ * Orchestrates browser-based crawling:
+ * - page navigation
+ * - script observation
+ * - network observation
+ * - cookie collection
  */
 
-export type CrawlController = {
-  next(): string | null;
-  enqueue(fromUrl: string, links: string[]): void;
-  visited(): Set<string>;
-};
+import { createBrowser } from "../browser/browserManager";
+import { navigatePage } from "../browser/pageNavigator";
+import { observeScripts } from "../browser/scriptObserver";
+import { observeNetwork } from "../browser/networkObserver";
+import { collectCookies } from "../browser/cookieCollector";
 
-export function createCrawlController(params: {
-  rootUrl: string;
-  maxDepth: number;
-  maxPages: number;
-}): CrawlController {
-  const { rootUrl, maxDepth, maxPages } = params;
+export async function runCrawl(url: string) {
+  const startedAt = Date.now();
+  const controller = new AbortController();
 
-  const root = new URL(rootUrl);
-  const queue: Array<{ url: string; depth: number }> = [
-    { url: rootUrl, depth: 0 }
-  ];
-  const seen = new Set<string>();
+  const browser = await createBrowser(controller.signal);
 
-  function isInternal(url: string): boolean {
-    try {
-      return new URL(url).origin === root.origin;
-    } catch {
-      return false;
-    }
+  try {
+    const { page } = browser;
+
+    const scriptObserver = await observeScripts(page, controller.signal);
+    const networkObserver = await observeNetwork(page, controller.signal);
+
+    await navigatePage(page, url, controller.signal);
+
+    const scripts = await scriptObserver.getRecords();
+    const network = networkObserver.getRecords();
+    const cookies = await collectCookies(page, controller.signal);
+
+    return {
+      startedAt,
+      finishedAt: Date.now(),
+      scripts,
+      network,
+      cookies
+    };
+  } finally {
+    await browser.close();
   }
-
-  return {
-    next() {
-      while (queue.length > 0) {
-        const item = queue.shift()!;
-        if (seen.has(item.url)) continue;
-        if (item.depth > maxDepth) continue;
-
-        seen.add(item.url);
-        return item.url;
-      }
-      return null;
-    },
-
-    enqueue(fromUrl: string, links: string[]) {
-      const parentDepth =
-        [...seen].includes(fromUrl)
-          ? [...queue, ...[]].length >= 0
-            ? undefined
-            : undefined
-          : undefined;
-
-      for (const link of links) {
-        if (!isInternal(link)) continue;
-        if (seen.has(link)) continue;
-        if (queue.length + seen.size >= maxPages) continue;
-
-        queue.push({
-          url: link,
-          depth:
-            [...queue].find((q) => q.url === fromUrl)?.depth ??
-            1
-        });
-      }
-    },
-
-    visited() {
-      return seen;
-    }
-  };
 }
