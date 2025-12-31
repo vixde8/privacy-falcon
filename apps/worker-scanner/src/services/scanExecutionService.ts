@@ -73,14 +73,16 @@ export async function executeScan(
 
     /* 3️⃣ Normalize scan output */
     const normalized = normalizeScanResult({
+      scanId: scan.scan_id,
       url: scan.meta.url,
       startedAt,
       finishedAt,
       scripts,
       network,
       cookies,
-      signals
+      signals,
     });
+
 
     /* scanning → scoring */
     transitionScanState("scanning", "scoring");

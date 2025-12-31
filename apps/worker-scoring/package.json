@@ -1,6 +1,7 @@
 {
   "name": "@pf/worker-scoring",
   "private": true,
+  "main": "src/index.js",
   "scripts": {
     "dev": "node src/index.js",
     "build": "echo build-scoring",

@@ -1,19 +1,12 @@
 "use client";
 
-/**
- * Scan Results Container.
- *
- * Responsibilities:
- * - Fetch final scan results
- * - Render score, confidence, findings
- * - No inference, no business logic
- */
-
 import { useEffect, useState } from "react";
 import { getScanResults } from "@/lib/api";
 import ScoreCard from "./ScoreCard";
 import ConfidenceBadge from "./ConfidenceBadge";
 import FindingsTable from "./FindingsTable";
+import VerdictCard from "./VerdictCard";
+import DownloadReportButton from "./DownloadReportButton";
 
 export default function ScanResults({
   scanId,
@@ -37,11 +30,7 @@ export default function ScanResults({
   }, [scanId]);
 
   if (error) {
-    return (
-      <p className="text-red-600">
-        {error}
-      </p>
-    );
+    return <p className="text-red-400">{error}</p>;
   }
 
   if (!data) {
@@ -50,18 +39,15 @@ export default function ScanResults({
 
   return (
     <div className="space-y-6">
-      <ScoreCard
-        score={data.score}
-        grade={data.grade}
-      />
+      <ScoreCard score={data.score} grade={data.grade} />
 
-      <ConfidenceBadge
-        value={data.confidence}
-      />
+      <VerdictCard score={data.score} />
 
-      <FindingsTable
-        findings={data.findings || []}
-      />
+      <ConfidenceBadge value={data.confidence} />
+
+      <FindingsTable findings={data.findings || []} />
+
+      <DownloadReportButton scanId={scanId} />
     </div>
   );
 }
