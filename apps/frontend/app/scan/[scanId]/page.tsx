@@ -6,18 +6,17 @@
 
 import ScanProgress from "@/components/ScanProgress";
 
-export default function ScanPage({
+export default async function ScanPage({
   params,
 }: {
-  params: { scanId: string };
+  params: Promise<{ scanId: string }>;
 }) {
+  const { scanId } = await params;
+
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-bold">
-        Scan Status
-      </h1>
-
-      <ScanProgress scanId={params.scanId} />
+      <h1 className="text-2xl font-bold">Scan Status</h1>
+      <ScanProgress scanId={scanId} />
     </section>
   );
 }

@@ -4,7 +4,7 @@
  */
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
 
 export async function submitScan(url: string) {
   const res = await fetch(`${API_BASE}/scans`, {
@@ -12,7 +12,10 @@ export async function submitScan(url: string) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ url }),
+    body: JSON.stringify({
+    target_url: url,
+    ruleset_version: "latest",
+  }),
   });
 
   if (!res.ok) {
@@ -47,3 +50,4 @@ export async function getScanStatus(scanId: string) {
 
   return res.json();
 }
+
