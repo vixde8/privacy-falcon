@@ -19,7 +19,11 @@ class ScanStatusResponse(BaseModel):
     updated_at: str
 
 
-@router.get("/{scan_id}/status", response_model=ScanStatusResponse)
+@router.get(
+    "/scans/{scan_id}/status",
+    response_model=ScanStatusResponse,
+    operation_id="get_scan_status"
+)
 def get_scan_status(scan_id: str, db=Depends(get_db)):
     scan = db.scans.find_one(
         {"scan_id": scan_id},

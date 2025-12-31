@@ -10,6 +10,9 @@ from deps.mongo import get_db
 from uuid import uuid4
 from datetime import datetime
 from fastapi import HTTPException
+from fastapi.responses import StreamingResponse
+from reports.pdf import generate_scan_report
+from io import BytesIO
 
 router = APIRouter(prefix="/scans", tags=["scans"])
 
@@ -59,8 +62,12 @@ async def create_scan(
         "status": "queued",
     }
 
-@router.get("/{scan_id}/status", response_model=ScanStatusResponse)
-async def get_scan_status(
+@router.get(
+    "/{scan_id}/status",
+    response_model=ScanStatusResponse,
+    operation_id="get_scan_status_internal"
+)
+async def get_scan_status_internal(
     scan_id: str,
     db=Depends(get_db),
 ):
@@ -77,3 +84,25 @@ async def get_scan_status(
         "error": scan.get("error"),
         "updated_at": scan.get("updated_at"),
     }
+
+
+@router.get("/{scan_id}/report")
+async def download_scan_report(
+    scan_id: str,
+    db=Depends(get_db),
+):
+    scan = db.scans.find_one({"scan_id": scan_id})
+    results = db.results.find_one({"scan_id": scan_id})
+
+    if not scan or not results:
+        raise HTTPException(status_code=404, detail="Report not available")
+
+    pdf_bytes = generate_scan_report(scan, results)
+
+    return StreamingResponse(
+        BytesIO(pdf_bytes),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f"attachment; filename=privacy-falcon-{scan_id}.pdf"
+        },
+    )
