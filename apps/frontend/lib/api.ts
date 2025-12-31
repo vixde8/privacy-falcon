@@ -26,3 +26,24 @@ export async function submitScan(url: string) {
 
   return res.json(); // { scan_id, status, created_at }
 }
+
+/**
+ * Fetch scan status.
+ * Frontend mirrors backend state exactly.
+ */
+export async function getScanStatus(scanId: string) {
+  const res = await fetch(`${API_BASE}/scans/${scanId}/status`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    let message = "Failed to fetch scan status";
+    try {
+      const error = await res.json();
+      message = error.message || message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  return res.json();
+}
