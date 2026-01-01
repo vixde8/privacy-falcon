@@ -1,11 +1,6 @@
-/**
- * Download Report Button
- *
- * Triggers backend PDF generation.
- */
+"use client";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 export default function DownloadReportButton({
   scanId,
@@ -22,9 +17,9 @@ export default function DownloadReportButton({
   return (
     <button
       onClick={download}
-      className="rounded-md border border-[#1f2933] bg-[#0b0f14] px-4 py-2 text-sm text-gray-300 hover:border-amber-400"
+      className="rounded-md bg-[#22D3EE] px-4 py-2 text-sm font-medium text-black hover:bg-[#06B6D4]"
     >
-      Download PDF Report
+      Download Report (PDF)
     </button>
   );
 }

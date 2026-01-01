@@ -1,72 +1,102 @@
 "use client";
 
-/**
- * Scan submission form.
- *
- * Responsibilities:
- * - Validate URL
- * - Submit scan request
- * - Handle loading + error
- * - Render success confirmation
- */
-
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { submitScan } from "@/lib/api";
-import ScanSubmitted from "./ScanSubmitted";
 
+/**
+ * ScanForm
+ *
+ * Visual-first scan entry.
+ * Logic intentionally unchanged.
+ */
 export default function ScanForm() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [scanId, setScanId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function onSubmit(e: React.FormEvent) {
+  const router = useRouter();
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-
-    if (!url || !url.startsWith("http")) {
-      setError("Please enter a valid URL including http or https.");
-      return;
-    }
-
     setLoading(true);
 
     try {
-      const result = await submitScan(url);
-      setScanId(result.scan_id);
+      const res = await submitScan(url);
+      router.push(`/scan/${res.scan_id}`);
     } catch (err: any) {
-      setError(err.message || "Scan submission failed.");
+      setError(err.message || "Failed to start scan");
     } finally {
       setLoading(false);
     }
   }
 
-  if (scanId) {
-    return <ScanSubmitted scanId={scanId} />;
-  }
-
   return (
-    <form onSubmit={onSubmit} className="space-y-4 max-w-xl">
-      <input
-        type="url"
-        placeholder="https://example.com"
-        className="w-full rounded border px-4 py-2"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        disabled={loading}
-      />
-
-      {error && (
-        <p className="text-sm text-red-600">{error}</p>
-      )}
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+    <div className="min-h-[70vh] flex items-center justify-center">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg rounded-xl bg-[#0F172A] border border-white/10 p-8 space-y-6"
       >
-        {loading ? "Submitting…" : "Start Scan"}
-      </button>
-    </form>
+        {/* Header */}
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Scan a Website
+          </h1>
+          <p className="text-sm text-gray-400">
+            Analyze privacy and compliance signals based on observable behavior.
+          </p>
+        </div>
+
+        {/* URL Input */}
+        <div className="space-y-2">
+          <label
+            htmlFor="url"
+            className="text-sm font-medium text-gray-300"
+          >
+            Website URL
+          </label>
+
+          <input
+            id="url"
+            type="url"
+            placeholder="https://example.com"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            required
+            className="w-full rounded-md bg-[#020617] border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          />
+        </div>
+
+        {/* Error */}
+        {error && (
+          <p className="text-sm text-red-400">
+            {error}
+          </p>
+        )}
+
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-md bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed text-black font-medium py-3 transition"
+        >
+          {loading ? "Starting Scan…" : "Start Privacy Scan"}
+        </button>
+
+        {/* What we analyze */}
+        <div className="pt-4 border-t border-white/10">
+          <p className="text-xs text-gray-400 mb-2">
+            What we analyze
+          </p>
+          <ul className="text-sm text-gray-300 space-y-1">
+            <li>• Third-party trackers and network requests</li>
+            <li>• Consent banners and enforcement behavior</li>
+            <li>• Script execution relative to consent</li>
+            <li>• Signal confidence and rule-based scoring</li>
+          </ul>
+        </div>
+      </form>
+    </div>
   );
 }

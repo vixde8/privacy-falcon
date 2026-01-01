@@ -1,27 +1,27 @@
 /**
- * Confidence Indicator.
+ * Confidence Badge.
  *
- * Explains reliability of detected signals.
+ * Displays confidence percentage for the assessment.
  */
 
 export default function ConfidenceBadge({
-  value,
+  confidence = 0,
 }: {
-  value: number;
+  confidence?: number;
 }) {
-  const pct = Math.round(value * 100);
+  const pct = Math.round(confidence * 100);
 
   return (
-    <div className="rounded border bg-white p-4">
-      <p className="text-sm text-gray-500">
+    <div className="rounded-xl bg-[#0F172A] border border-white/10 px-5 py-4 text-center min-w-[160px]">
+      <p className="text-xs text-gray-400 uppercase tracking-wide">
         Confidence
       </p>
 
-      <p className="text-lg font-semibold">
+      <p className="mt-1 text-3xl font-semibold text-white">
         {pct}%
       </p>
 
-      <p className="text-xs text-gray-400">
+      <p className="mt-1 text-xs text-gray-500">
         Based on signal coverage and consistency
       </p>
     </div>

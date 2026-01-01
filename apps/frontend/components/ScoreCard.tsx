@@ -1,7 +1,7 @@
 /**
- * Score & Grade Card.
+ * Score Card.
  *
- * Primary trust signal for the user.
+ * Displays overall compliance score and grade.
  */
 
 export default function ScoreCard({
@@ -12,16 +12,16 @@ export default function ScoreCard({
   grade: string;
 }) {
   return (
-    <div className="rounded border bg-white p-6">
-      <p className="text-sm text-gray-500">
+    <div className="h-full rounded-xl bg-[#0F172A] border border-white/10 p-6 flex flex-col justify-center">
+      <p className="text-xs uppercase tracking-wide text-gray-400">
         Overall Compliance Score
       </p>
 
-      <div className="flex items-end gap-4">
-        <p className="text-5xl font-bold">
+      <div className="mt-4 flex items-baseline gap-3">
+        <span className="text-5xl font-bold text-white">
           {score}
-        </p>
-        <span className="text-2xl font-semibold">
+        </span>
+        <span className="text-lg font-semibold text-cyan-400">
           Grade {grade}
         </span>
       </div>
