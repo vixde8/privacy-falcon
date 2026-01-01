@@ -1,8 +1,7 @@
 /**
- * Verdict Card
+ * Verdict Card.
  *
- * Converts score into human-readable risk language.
- * No legal claims. Neutral tone.
+ * Human-readable risk classification derived from score.
  */
 
 export default function VerdictCard({
@@ -10,37 +9,34 @@ export default function VerdictCard({
 }: {
   score: number;
 }) {
-  let verdict = "Low Risk";
-  let description =
-    "No significant privacy or compliance risks were detected based on observed signals.";
-  let color = "text-green-400";
+  const verdict =
+    score >= 90 ? "Low Risk" :
+    score >= 70 ? "Moderate Risk" :
+    "High Risk";
 
-  if (score < 85) {
-    verdict = "Medium Risk";
-    description =
-      "Some signals may require attention depending on jurisdiction and usage context.";
-    color = "text-amber-400";
-  }
-
-  if (score < 60) {
-    verdict = "High Risk";
-    description =
-      "Multiple signals indicate potential compliance concerns that may require remediation.";
-    color = "text-red-400";
-  }
+  const color =
+    score >= 90 ? "text-green-400" :
+    score >= 70 ? "text-amber-400" :
+    "text-red-400";
 
   return (
-    <div className="rounded-xl bg-[#111827] border border-[#1f2933] p-6">
-      <p className="text-sm text-gray-400">
+    <div className="rounded-xl bg-[#0F172A] border border-white/10 p-6 h-full">
+      <p className="text-xs uppercase tracking-wide text-gray-400">
         Verdict
       </p>
 
-      <p className={`text-2xl font-semibold mt-1 ${color}`}>
+      <h3 className={`mt-2 text-2xl font-semibold ${color}`}>
         {verdict}
+      </h3>
+
+      <p className="mt-2 text-sm text-gray-400">
+        No significant privacy or compliance risks were detected
+        based on observed signals.
       </p>
 
-      <p className="text-sm text-gray-400 mt-2">
-        {description}
+      <p className="mt-3 text-xs text-gray-500">
+        Overall assessment derived from tracker behavior, consent enforcement,
+        and rule-based confidence scoring.
       </p>
     </div>
   );

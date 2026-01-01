@@ -6,45 +6,40 @@
  */
 
 export default function FindingsTable({
-  findings,
+  findings = [],
 }: {
-  findings: any[];
+  findings?: any[];
 }) {
   if (!findings.length) {
     return (
-      <p className="text-gray-500">
-        No detectable tracking signals found.
+      <p className="text-sm text-gray-400">
+        No detectable tracking signals were observed during the scan.
+        This typically indicates minimal third-party tracking behavior.
       </p>
     );
   }
 
   return (
-    <div className="rounded border bg-white p-4">
-      <h2 className="font-semibold mb-3">
-        Detected Signals
-      </h2>
+    <table className="w-full text-sm">
+      <thead>
+        <tr className="text-left text-gray-500 border-b border-white/10">
+          <th className="py-2">Identifier</th>
+          <th className="py-2">Category</th>
+          <th className="py-2">Severity</th>
+          <th className="py-2">Confidence</th>
+        </tr>
+      </thead>
 
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left text-gray-500">
-            <th>Identifier</th>
-            <th>Category</th>
-            <th>Severity</th>
-            <th>Confidence</th>
+      <tbody>
+        {findings.map((f: any) => (
+          <tr key={f.id} className="border-b border-white/5">
+            <td className="py-2">{f.id}</td>
+            <td className="py-2">{f.category}</td>
+            <td className="py-2">{f.severity}</td>
+            <td className="py-2">{f.confidence}</td>
           </tr>
-        </thead>
-
-        <tbody>
-          {findings.map((f) => (
-            <tr key={f.id} className="border-t">
-              <td>{f.id}</td>
-              <td>{f.category}</td>
-              <td>{f.severity}</td>
-              <td>{f.confidence}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 }
